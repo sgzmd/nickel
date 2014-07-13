@@ -11,6 +11,7 @@ import com.google.appengine.repackaged.com.google.common.collect.ImmutableList;
 ))
 public class NickelAPI {
   public StartBookDownloadResponse startBookDownload(StartBookDownloadRequest request) {
-    return new StartBookDownloadResponse("HELO", "EHLO", ImmutableList.<String>of());
+//    return new StartBookDownloadResponse(new Converter().convert("ID"), "HELO", "EHLO", ImmutableList.<String>of());
+    return null;
   }
 }
