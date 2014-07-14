@@ -14,10 +14,11 @@ object Env {
 }
 
 case class ParsingException(message: String) extends Exception
+case class SourceNotSupportedException(message: String) extends Exception
 
 trait FictionLoader {
   def canHandleUrl(url: String) : Boolean
-  def getChapterList(html: String) : List[Chapter]
+  def getChapterList(html: String, url: String) : List[Chapter]
 }
 
 class FanFictionNetLoader extends FictionLoader {
@@ -32,13 +33,18 @@ class FanFictionNetLoader extends FictionLoader {
 
   override def canHandleUrl(url: String): Boolean = url.contains("fanfiction.net")
 
-  override def getChapterList(html: String): List[Chapter] = {
+  override def getChapterList(html: String, url: String): List[Chapter] = {
     val soup = Jsoup.parse(html)
-    extractChapters(soup)
+    extractChapters(soup, url)
   }
 
-  def extractChapters(soup: Document) : List[Chapter] = {
+  def extractChapters(soup: Document, url: String) : List[Chapter] = {
     val select = soup.select(chapterSelectorXPath).first()
+
+    if (select == null) {
+      throw new ParsingException("Couldn't find chapter selector for the document " + url)
+    }
+
     val options = select.getElementsByTag("option").asScala
     val onchange = select.attr("onchange")
 
@@ -59,7 +65,19 @@ class FanFictionNetLoader extends FictionLoader {
 }
 
 object FictionConverter {
-  def detectFictionType(url: String): Unit = {
+  val cache : List[FictionLoader] = List(new FanFictionNetLoader)
 
+  def detectFictionType(url: String): FictionLoader = {
+    val opt = cache.find(x => x.canHandleUrl(url))
+    if (opt.isEmpty) {
+      throw new SourceNotSupportedException("URL is not supported: " + url)
+    }
+
+    opt.get
+  }
+
+  def getStoryChapters(url: String, html: String) : java.lang.Iterable[Chapter] = {
+    val loader = detectFictionType(url)
+    loader.getChapterList(html, url).asJava
   }
 }

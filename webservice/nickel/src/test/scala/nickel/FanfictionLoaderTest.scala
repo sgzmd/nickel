@@ -36,13 +36,13 @@ class FanfictionLoaderTest extends FlatSpec with Matchers {
 
   "There" should "be 24 chapters" in {
     val loader = new FanFictionNetLoader()
-    val chapters = loader.getChapterList(doc1)
+    val chapters = loader.getChapterList(doc1, "")
     chapters.size should be(24)
   }
 
   "There" should "be following chapters names" in {
     val loader = new FanFictionNetLoader()
-    val chapters = loader.getChapterList(doc1)
+    val chapters = loader.getChapterList(doc1, "")
 
     for (pair <- chapters.map(x => x.name).zip(expectedChapterNames)) {
       pair._1 should be (pair._2)

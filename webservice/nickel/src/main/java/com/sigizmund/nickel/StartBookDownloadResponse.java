@@ -37,4 +37,14 @@ public class StartBookDownloadResponse {
   public String getStoryAuthor() {
     return storyAuthor;
   }
+
+  @Override
+  public String toString() {
+    return "StartBookDownloadResponse{" +
+        "requestedChapterUrls=" + requestedChapterUrls +
+        ", storyName='" + storyName + '\'' +
+        ", storyAuthor='" + storyAuthor + '\'' +
+        ", storyId='" + storyId + '\'' +
+        '}';
+  }
 }
