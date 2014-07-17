@@ -9,10 +9,6 @@ import java.util.logging.Logger
 
 import scala.collection.JavaConverters._
 
-object Env {
-  val logger = Logger.getLogger("Nickel")
-}
-
 case class ParsingException(message: String) extends Exception
 case class SourceNotSupportedException(message: String) extends Exception
 
@@ -47,8 +43,6 @@ class FanFictionNetLoader extends FictionLoader {
 
     val options = select.getElementsByTag("option").asScala
     val onchange = select.attr("onchange")
-
-    Env.logger.info(onchange)
 
     val matcher = chapterOnChangePattern.matcher(onchange)
     if (matcher.matches()) {
