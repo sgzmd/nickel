@@ -64,7 +64,18 @@ public class DownloadActivity extends Activity {
           Log.d(getLocalClassName(), startDownload.toString());
 
           StartBookDownloadResponse response = startDownload.execute();
-          Log.d(getLocalClassName(), response.toPrettyString());
+
+
+          for (String chapterUrl : response.getRequestedChapterUrls()) {
+            updateLabelText("Downloading URL " + chapterUrl);
+            String chapterHtml = slurpUrl(chapterUrl);
+            api.nickel().addChapter(new StartBookDownloadRequest()
+                .setChapterUrl(chapterUrl)
+                .setChapterText(chapterHtml)).execute();
+          }
+
+          updateLabelText("All chapters downloaded");
+
           return 0L;
         } catch (IOException e) {
           throw new RuntimeException(e);

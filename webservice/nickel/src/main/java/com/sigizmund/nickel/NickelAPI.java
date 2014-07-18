@@ -18,7 +18,7 @@ import nickel.FictionConverter$;
     packagePath = ""
 ))
 public class NickelAPI {
-  @ApiMethod(name = "nickel.startDownload", path = "nickel", httpMethod = ApiMethod.HttpMethod.POST)
+  @ApiMethod(name = "nickel.startDownload", path = "startDownload", httpMethod = ApiMethod.HttpMethod.POST)
   public StartBookDownloadResponse startBookDownload(
       StartBookDownloadRequest request) {
 
@@ -37,5 +37,10 @@ public class NickelAPI {
     )));
 
     return resp;
+  }
+
+  @ApiMethod(name = "nickel.addChapter", path = "addChapter", httpMethod = ApiMethod.HttpMethod.POST)
+  public void addChapter(StartBookDownloadRequest request) {
+    return;
   }
 }
