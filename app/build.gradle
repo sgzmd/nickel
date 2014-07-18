@@ -12,6 +12,20 @@ buildscript {
     }
 }
 
+repositories {
+    maven {
+        url 'http://google-api-client-libraries.appspot.com/mavenrepo'
+    }
+    mavenCentral()
+    mavenLocal()
+
+    maven {   url "${System.env.HOME}/.m2/repository" }
+}
+
+dependencies {
+
+}
+
 allprojects {
     repositories {
         jcenter()
