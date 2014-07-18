@@ -20,15 +20,14 @@ import nickel.FictionConverter$;
 public class NickelAPI {
   @ApiMethod(name = "nickel.startDownload", path = "nickel", httpMethod = ApiMethod.HttpMethod.POST)
   public StartBookDownloadResponse startBookDownload(
-      @Named("url") String url,
-      @Named("html") String html) {
+      StartBookDownloadRequest request) {
 
     StartBookDownloadResponse resp = new StartBookDownloadResponse(
         "",
         "",
         "",
         ImmutableList.copyOf(Iterables.transform(
-        FictionConverter$.MODULE$.getStoryChapters(url, html),
+        FictionConverter$.MODULE$.getStoryChapters(request.getChapterUrl(), request.getChapterText()),
         new Function<Chapter, String>() {
           @Override
           public String apply(Chapter chapter) {

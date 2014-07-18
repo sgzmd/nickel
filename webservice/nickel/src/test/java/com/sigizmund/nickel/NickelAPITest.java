@@ -29,7 +29,8 @@ public class NickelAPITest {
     @Test
     public void initDownloadTest() throws IOException {
         NickelAPI api = new NickelAPI();
-        StartBookDownloadResponse resp = api.startBookDownload(URL, HTML);
+      StartBookDownloadRequest request = new StartBookDownloadRequest(URL, HTML);
+      StartBookDownloadResponse resp = api.startBookDownload(request);
         Truth.ASSERT
                 .that(resp.getRequestedChapterUrls().size())
                 .is(24);

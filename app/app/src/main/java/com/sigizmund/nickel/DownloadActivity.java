@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.sigizmund.nickelApi.NickelApi;
+import com.sigizmund.nickelApi.model.StartBookDownloadRequest;
 import com.sigizmund.nickelApi.model.StartBookDownloadResponse;
 
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ import java.net.URL;
 
 public class DownloadActivity extends Activity {
 
-  public static final String ROOT_URL = "http://10.0.2.2:8080";
+  public static final String ROOT_URL = "http://10.0.2.2:8080/_ah/api";
   private TextView downloadText;
   private NickelApi api;
 
@@ -56,11 +57,14 @@ public class DownloadActivity extends Activity {
 
           NickelApi.Nickel.StartDownload startDownload = api
               .nickel()
-              .startDownload(mainPageHtml, url);
+              .startDownload(new StartBookDownloadRequest()
+                  .setChapterText(mainPageHtml)
+                  .setChapterUrl(url));
 
           Log.d(getLocalClassName(), startDownload.toString());
 
           StartBookDownloadResponse response = startDownload.execute();
+          Log.d(getLocalClassName(), response.toPrettyString());
           return 0L;
         } catch (IOException e) {
           throw new RuntimeException(e);
@@ -99,7 +103,6 @@ public class DownloadActivity extends Activity {
 
       int lineNumber = 0;
       for ( ;line != null; line = br.readLine(), ++lineNumber) {
-        Log.d(getLocalClassName(), line);
         sb.append(line);
       }
 
